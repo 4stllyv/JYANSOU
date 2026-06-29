@@ -260,3 +260,23 @@ font-size: 14px;
 .half {
   flex: 1;
 }
+
+.history-header {
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.history-header:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.history-detail {
+  background: rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
