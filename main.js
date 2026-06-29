@@ -1,3 +1,14 @@
+const firebaseConfig = {
+  apiKey: "AIzaSyC2xbt0mpcyKqlZXB5BY_wMvCLukdRS7eE",
+  authDomain: "jyansou.firebaseapp.com",
+  databaseURL: "https://jyansou-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "jyansou"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
 const playersDiv = document.getElementById("players");
 
 // ＋−ボタン
@@ -22,6 +33,9 @@ function setSign(index, value) {
 function toggleUma() {
   useUma = document.getElementById("useUma").checked;
 }
+
+let lastResult = null;
+
 
 // 計算
 function calculate() {
@@ -90,9 +104,20 @@ function calculate() {
 
   // ✅ 順位決定
   const sorted = [...players].sort((a, b) => b.score - a.score);
+
   sorted.forEach((p, i) => {
     p.rank = i + 1;
   });
+
+    lastResult = players.map(p => {
+      const rank = sorted.find(s => s.index === p.index).rank;
+
+      return {
+        name: p.name,
+        score: p.score,
+        rank: rank
+      };
+    });
 
   const base = tableCost / playerCount;
   let totalPayment = 0;
@@ -192,3 +217,21 @@ function setMode(n) {
 
 setMode(4);
 toggleUma();
+
+function saveResult() {
+  if (!lastResult) {
+    alert("先に計算して！");
+    return;
+  }
+
+  const title = prompt("戦績タイトル入力");
+  if (!title) return;
+
+  db.ref("mahjongResults").push({
+    title: title,
+    date: new Date().toISOString(),
+    players: lastResult
+  });
+
+  alert("保存した！");
+}
