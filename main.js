@@ -1,9 +1,5 @@
 const playersDiv = document.getElementById("players");
 
-// ✅ ウマ設定
-let uma = [20000, 10000, -10000, -20000]; // 点数ベース
-let useUma = true;
-
 // ＋−ボタン
 function setSign(index, value) {
   signs[index] = value;
@@ -29,29 +25,42 @@ function toggleUma() {
 
 // 計算
 function calculate() {
-  const tableCost = Number(document.getElementById("tableCost").value);
+  const tableCostInput = document.getElementById("tableCost").value;
+  const tableCost = Number(tableCostInput);
   const rate = Number(document.getElementById("rate").value);
 
   let players = [];
 
+  // ✅ 卓代チェック（空欄対応）
+  if (tableCostInput === "") {
+    alert("卓代を入力して");
+    return;
+  }
+
+  // ✅ プレイヤー入力チェック＋取得
   for (let i = 0; i < playerCount; i++) {
-    const name =
-      document.getElementById(`name${i}`).value || `プレイヤー${i + 1}`;
+    const name = document.getElementById(`name${i}`).value.trim();
+    const scoreInput = document.getElementById(`score${i}`).value;
 
-    const inputScore = Number(document.getElementById(`score${i}`).value);
-
-    if (isNaN(inputScore)) {
-      alert("点数を入力して");
+    // 名前チェック
+    if (!name) {
+      alert(`${i + 1}人目の名前を入力して`);
       return;
     }
 
-    // ✅ そのまま点数使用
+    // 点数チェック（空欄）
+    if (scoreInput === "") {
+      alert(`${i + 1}人目の点数を入力して`);
+      return;
+    }
+
+    const inputScore = Number(scoreInput);
     const score = inputScore * signs[i];
 
     players.push({ name, score, index: i });
   }
 
-  // 合計チェック
+  // ✅ 合計チェック
   const totalScore = players.reduce((sum, p) => sum + p.score, 0);
 
   const resultList = document.getElementById("results");
@@ -63,7 +72,23 @@ function calculate() {
     return;
   }
 
-  // 順位
+  // ✅ ウマ取得（1回だけ）
+  if (useUma) {
+    uma = [];
+
+    for (let i = 0; i < playerCount; i++) {
+      const value = Number(document.getElementById(`uma${i}`).value);
+
+      if (isNaN(value)) {
+        alert("ウマを入力して");
+        return;
+      }
+
+      uma.push(value);
+    }
+  }
+
+  // ✅ 順位決定
   const sorted = [...players].sort((a, b) => b.score - a.score);
   sorted.forEach((p, i) => {
     p.rank = i + 1;
@@ -72,16 +97,12 @@ function calculate() {
   const base = tableCost / playerCount;
   let totalPayment = 0;
 
+  // ✅ 計算
   players.forEach((p) => {
-    const rankData = sorted.find((s) => s.index === p.index);
-    const rank = rankData.rank;
+    const rank = sorted.find((s) => s.index === p.index).rank;
 
-    const diff = p.score;
+    const scoreAdjust = -(p.score / 1000) * rate;
 
-    // ✅ スコア調整
-    const scoreAdjust = -(diff / 1000) * rate;
-
-    // ✅ ウマ調整（ONのときだけ）
     let umaAdjust = 0;
     if (useUma) {
       umaAdjust = -(uma[rank - 1] / 1000) * rate;
@@ -89,14 +110,10 @@ function calculate() {
 
     const payment = Math.round(base + scoreAdjust + umaAdjust);
 
-    const color = p.score >= 0 ? "green" : "red";
-    const crown = rank === 1 ? "👑" : "";
+    const className =
+      rank === 1 ? "first" : p.score >= 0 ? "win" : "lose";
 
     const li = document.createElement("li");
-
-    const className =
-      rank === 1 ? "first" :
-      p.score >= 0 ? "win" : "lose";
 
     li.innerHTML = `
       <span class="${className}">
@@ -151,16 +168,27 @@ function setMode(n) {
 
   document.getElementById("btn4").classList.remove("active");
   document.getElementById("btn3").classList.remove("active");
-
   document.getElementById(n === 4 ? "btn4" : "btn3").classList.add("active");
 
-  if (playerCount === 3) {
-    uma = [20000, 0, -20000];
-  } else {
-    uma = [20000, 10000, -10000, -20000];
+  // ✅ ウマ全部0
+  uma = Array(playerCount).fill("");
+
+  for (let i = 0; i < 4; i++) {
+    const input = document.getElementById(`uma${i}`);
+
+    if (!input) continue;
+
+    if (i < playerCount) {
+      input.style.display = "block";
+      input.value = uma[i];
+    } else {
+      input.style.display = "none";
+    }
   }
 
   createPlayers();
 }
 
+
 setMode(4);
+toggleUma();
