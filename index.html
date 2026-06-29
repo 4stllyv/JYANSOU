@@ -11,27 +11,32 @@
   <div class="container">
     <h1>麻雀 卓代計算</h1>
 
-    <div class="section">
-      <label>卓代（合計）</label>
-      <input type="number" id="tableCost" placeholder="例：4000">
+    <div class="section row">
+      <div class="half">
+        <label>卓代（合計）</label>
+        <input type="number" id="tableCost">
+      </div>
+
+      <div class="half mode-toggle">
+        <button onclick="setMode(4)" id="btn4">四麻</button>
+        <button onclick="setMode(3)" id="btn3">三麻</button>
+      </div>
     </div>
 
-    <div class="section mode-toggle">
-      <button onclick="setMode(4)" id="btn4">四麻</button>
-      <button onclick="setMode(3)" id="btn3">三麻</button>
-    </div>
 
-    <div class="section">
-      <label>レート（1000点あたり円）</label>
-      <input type="number" id="rate" value="50">
-    </div>
+    <div class="section row">
+      <div class="half">
+        <label>レート</label>
+        <input type="number" id="rate" value="50">
+      </div>
 
-    <div class="section uma-toggle">
-      <span>ウマ</span>
-      <label class="switch">
-        <input type="checkbox" id="useUma" checked onchange="toggleUma()">
-        <span class="slider"></span>
-      </label>
+      <div class="half uma-toggle">
+        <span>ウマ</span>
+        <label class="switch">
+          <input type="checkbox" id="useUma" checked onchange="toggleUma()">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
 
     <div id="players"></div>
