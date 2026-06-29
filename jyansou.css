@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+.container {
+  padding: 15px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 22px;
+}
+
+/* 入力エリア */
+.section {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+/* プレイヤー */
+.player {
+  background: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+/* ボタンエリア */
+.score-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ＋−ボタン */
+.sign-btn {
+  flex: 0 0 50px;
+  font-size: 20px;
+  border: none;
+  border-radius: 8px;
+  background: #ddd;
+}
+
+/* 点数入力 */
+.score-input {
+  flex: 1;
+  font-size: 18px;
+}
+
+/* 計算ボタン */
+button.calc {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  background: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* 結果 */
+li {
+  font-size: 18px;
+  padding: 8px 0;
+}
