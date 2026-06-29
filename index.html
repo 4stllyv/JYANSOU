@@ -2,70 +2,27 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>麻雀 卓代計算</title>
+  <title>麻雀アプリ</title>
   <link rel="stylesheet" href="styles.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
   <div class="container">
-    <h1>麻雀 卓代計算</h1>
+    <h1>麻雀アプリ</h1>
 
-    <div class="section row">
-      <div class="half">
-        <label>卓代（合計）</label>
-        <input type="number" id="tableCost">
-      </div>
-
-      <div class="half mode-toggle">
-        <button onclick="setMode(4)" id="btn4">四麻</button>
-        <button onclick="setMode(3)" id="btn3">三麻</button>
-      </div>
-    </div>
-
-
-    <div class="section row">
-      <div class="half">
-        <label>レート</label>
-        <input type="number" id="rate" value="50">
-      </div>
-
-      <!-- ✅ ここ直す -->
-      <div class="half uma-box">
-        <div class="uma-header">
-          <span>ウマ</span>
-
-          <label class="switch">
-            <input type="checkbox" id="useUma" onchange="toggleUma()">
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        
-        <div id="umaBox" class="uma-inputs">
-          <input type="number" id="uma0" placeholder="1位">
-          <input type="number" id="uma1" placeholder="2位">
-          <input type="number" id="uma2" placeholder="3位">
-          <input type="number" id="uma3" placeholder="4位">
-        </div>
-      </div>
-    </div>
-
-    <div id="players"></div>
-
-    <button class="calc" onclick="calculate()">計算する</button>
-
-    <h2>結果</h2>
-    <ul id="results"></ul>
-
-    <p id="total"></p>
-    <button onclick="saveResult()">戦績保存</button>
+    <button onclick="goCalc()">卓代計算</button>
+    <button onclick="goHistory()">戦績履歴</button>
   </div>
 
-  
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script>
+    function goCalc() {
+      location.href = "calc.html";
+    }
 
-  <script src="main.js"></script>
+    function goHistory() {
+      location.href = "history.html";
+    }
+  </script>
+
 </body>
 </html>
