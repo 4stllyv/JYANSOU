@@ -30,12 +30,24 @@
         <input type="number" id="rate" value="50">
       </div>
 
-      <div class="half uma-toggle">
-        <span>ウマ</span>
-        <label class="switch">
-          <input type="checkbox" id="useUma" checked onchange="toggleUma()">
-          <span class="slider"></span>
-        </label>
+      <!-- ✅ ここ直す -->
+      <div class="half uma-box">
+        <div class="uma-header">
+          <span>ウマ</span>
+
+          <label class="switch">
+            <input type="checkbox" id="useUma" onchange="toggleUma()">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        
+        <div id="umaBox" class="uma-inputs">
+          <input type="number" id="uma0" placeholder="1位">
+          <input type="number" id="uma1" placeholder="2位">
+          <input type="number" id="uma2" placeholder="3位">
+          <input type="number" id="uma3" placeholder="4位">
+        </div>
       </div>
     </div>
 
