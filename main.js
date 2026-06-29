@@ -38,19 +38,16 @@ function setSign(index, value) {
   const plusBtn = document.getElementById(`plus${index}`);
   const minusBtn = document.getElementById(`minus${index}`);
 
-  plusBtn.style.background = "#ddd";
-  minusBtn.style.background = "#ddd";
-  plusBtn.style.color = "black";
-  minusBtn.style.color = "black";
+  plusBtn.classList.remove("plus-active");
+  minusBtn.classList.remove("minus-active");
 
   if (value === 1) {
-    plusBtn.style.background = "#4caf50";
-    plusBtn.style.color = "white";
+    plusBtn.classList.add("plus-active");
   } else {
-    minusBtn.style.background = "#f44336";
-    minusBtn.style.color = "white";
+    minusBtn.classList.add("minus-active");
   }
 }
+
 
 // ✅ ウマ切替
 function toggleUma() {
@@ -124,13 +121,15 @@ function calculate() {
 
     const li = document.createElement("li");
 
+    const className =
+      rank === 1 ? "first" :
+      p.score >= 0 ? "win" : "lose";
+
     li.innerHTML = `
-      <span style="color:${color}; font-weight:bold;">
+      <span class="${className}">
         ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
       </span>
-      ▶ ${crown} ${rank}位
-      ${useUma ? `（ウマ ${uma[rank - 1] > 0 ? "+" : ""}${uma[rank - 1]}）` : ""}
-      : ${payment} 円
+      ▶ ${rank}位 : ${payment} 円
     `;
 
     resultList.appendChild(li);
