@@ -1,9 +1,11 @@
 const playersDiv = document.getElementById("players");
 
+// 符号
 const signs = [1, 1, 1, 1];
 
-// ✅ ウマ設定（デフォルト 10-20）
-let uma = [20, 10, -10, -20];
+// ✅ ウマ設定
+let uma = [20000, 10000, -10000, -20000]; // 点数ベース
+let useUma = true;
 
 // UI生成
 for (let i = 0; i < 4; i++) {
@@ -20,7 +22,7 @@ for (let i = 0; i < 4; i++) {
         class="score-input" 
         type="number" 
         inputmode="numeric"
-        placeholder="点 (例:50)" 
+        placeholder="点 (例:50000)" 
         id="score${i}">
     </div>
   `;
@@ -29,7 +31,7 @@ for (let i = 0; i < 4; i++) {
   setSign(i, 1);
 }
 
-// ＋−色
+// ＋−ボタン
 function setSign(index, value) {
   signs[index] = value;
 
@@ -50,6 +52,11 @@ function setSign(index, value) {
   }
 }
 
+// ✅ ウマ切替
+function toggleUma() {
+  useUma = document.getElementById("useUma").checked;
+}
+
 // 計算
 function calculate() {
   const tableCost = Number(document.getElementById("tableCost").value);
@@ -68,12 +75,13 @@ function calculate() {
       return;
     }
 
-    const score = inputScore * 1000 * signs[i];
+    // ✅ そのまま点数使用
+    const score = inputScore * signs[i];
 
     players.push({ name, score, index: i });
   }
 
-  // ✅ 合計0チェック
+  // 合計チェック
   const totalScore = players.reduce((sum, p) => sum + p.score, 0);
 
   const resultList = document.getElementById("results");
@@ -85,7 +93,7 @@ function calculate() {
     return;
   }
 
-  // ✅ 順位
+  // 順位
   const sorted = [...players].sort((a, b) => b.score - a.score);
   sorted.forEach((p, i) => {
     p.rank = i + 1;
@@ -99,14 +107,17 @@ function calculate() {
     const rank = rankData.rank;
 
     const diff = p.score;
+
+    // ✅ スコア調整
     const scoreAdjust = -(diff / 1000) * rate;
 
-    // ✅ ウマ適用
-    const umaAdjust = -(uma[rank - 1]) * rate;
+    // ✅ ウマ調整（ONのときだけ）
+    let umaAdjust = 0;
+    if (useUma) {
+      umaAdjust = -(uma[rank - 1] / 1000) * rate;
+    }
 
     const payment = Math.round(base + scoreAdjust + umaAdjust);
-
-    const displayScore = p.score / 1000;
 
     const color = p.score >= 0 ? "green" : "red";
     const crown = rank === 1 ? "👑" : "";
@@ -115,10 +126,10 @@ function calculate() {
 
     li.innerHTML = `
       <span style="color:${color}; font-weight:bold;">
-        ${p.name}（${displayScore > 0 ? "+" : ""}${displayScore}）
+        ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
       </span>
-      ▶ ${crown} ${rank}位 
-      （ウマ ${uma[rank - 1] > 0 ? "+" : ""}${uma[rank - 1]}）
+      ▶ ${crown} ${rank}位
+      ${useUma ? `（ウマ ${uma[rank - 1] > 0 ? "+" : ""}${uma[rank - 1]}）` : ""}
       : ${payment} 円
     `;
 
