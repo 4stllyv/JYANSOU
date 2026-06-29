@@ -28,11 +28,6 @@ h1 {
   color: #f5f5f5;
 }
 
-h2 {
-  margin: 6px 0 4px;
-  font-size: 16px;
-}
-
 /* カード */
 .section, .player {
   background: rgba(255,255,255,0.08);
@@ -45,15 +40,14 @@ h2 {
 
 
 .section {
-  padding: 4px;
-  margin-bottom: 4px;
+  padding: 6px;
+  margin-bottom: 6px;
 }
 
 .player {
   display: flex;
   flex-direction: column;
-  padding: 5px;
-  gap: 4px;
+  padding: 6px;
 }
 
 #players {
@@ -141,7 +135,7 @@ li {
   background: rgba(255,255,255,0.1);
   border-radius: 10px;
   padding: 6px;
-  font-size: 14px;
+font-size: 14px;
   margin-bottom: 4px;
 }
 
@@ -159,13 +153,6 @@ li {
 .first {
   color: gold;
   font-weight: bold;
-}
-
-/* ✅ ウマトグル（スイッチ化） */
-.uma-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 /* iPhone風スイッチ */
@@ -228,6 +215,29 @@ li {
   padding-top: 18px; /* 入力と高さ揃える */
 }
 
+.uma-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ←ここがポイント */
+  gap: 4px;
+}
+.uma-inputs input {
+  padding: 4px;
+  font-size: 12px;
+  height: 28px;
+}
+
+.uma-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ✨ 初期非表示 */
+#umaBox {
+  margin-top: 6px;
+}
+
+
 .mode-toggle button.active {
   background: #ffd700;
   color: black;
@@ -240,11 +250,4 @@ li {
 
 .half {
   flex: 1;
-}
-
-
-#results {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
 }
