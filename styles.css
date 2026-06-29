@@ -8,6 +8,15 @@ body {
   font-size: 14px;
 }
 
+
+/* PCだけスクロールOK */
+@media (min-width: 768px) {
+  body {
+    overflow: auto;
+  }
+}
+
+
 /* コンテナ */
 .container {
   padding: 10px;
