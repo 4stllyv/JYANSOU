@@ -152,9 +152,6 @@ function calculate() {
 
   resultList.appendChild(li);
 });
-
-  document.getElementById("total").textContent =
-    `合計：${totalPayment} 円`;
 }
 
 let playerCount = 4;
