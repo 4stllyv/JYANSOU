@@ -109,49 +109,49 @@ function calculate() {
     p.rank = i + 1;
   });
 
-    lastResult = players.map(p => {
-      const rank = sorted.find(s => s.index === p.index).rank;
-
-      return {
-        name: p.name,
-        score: p.score,
-        rank: rank
-      };
-    });
 
   const base = tableCost / playerCount;
   let totalPayment = 0;
 
+  lastResult = [];
+
   // ✅ 計算
   players.forEach((p) => {
-    const rank = sorted.find((s) => s.index === p.index).rank;
+  const rank = sorted.find((s) => s.index === p.index).rank;
 
-    const scoreAdjust = -(p.score / 1000) * rate;
+  const scoreAdjust = -(p.score / 1000) * rate;
 
-    let umaAdjust = 0;
-    if (useUma) {
-      umaAdjust = -(uma[rank - 1] / 1000) * rate;
-    }
+  let umaAdjust = 0;
+  if (useUma) {
+    umaAdjust = -(uma[rank - 1] / 1000) * rate;
+  }
 
-    const payment = Math.round(base + scoreAdjust + umaAdjust);
+  const payment = Math.round(base + scoreAdjust + umaAdjust);
 
-    const className =
-      rank === 1 ? "first" : p.score >= 0 ? "win" : "lose";
-
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <span class="${className}">
-        ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
-      </span>
-      ▶ ${rank}位
-      ${useUma ? `（ウマ ${uma[rank - 1] > 0 ? "+" : ""}${uma[rank - 1]}）` : ""}
-      : ${payment} 円
-    `;
-
-    resultList.appendChild(li);
-    totalPayment += payment;
+  // ✅ ここ追加
+  lastResult.push({
+    name: p.name,
+    score: p.score,
+    rank: rank,
+    payment: payment
   });
+
+  // 表示はそのまま
+  const className =
+    rank === 1 ? "first" : p.score >= 0 ? "win" : "lose";
+
+  const li = document.createElement("li");
+
+  li.innerHTML = `
+    <span class="${className}">
+      ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
+    </span>
+    ▶ ${rank}位
+    : ${payment} 円
+  `;
+
+  resultList.appendChild(li);
+});
 
   document.getElementById("total").textContent =
     `合計：${totalPayment} 円`;
@@ -219,7 +219,6 @@ setMode(4);
 toggleUma();
 
 function saveResult() {
-  console.log("lastResult:", lastResult);
   if (!lastResult) {
     alert("先に計算して！");
     return;
@@ -228,13 +227,92 @@ function saveResult() {
   const title = prompt("戦績タイトル入力");
   if (!title) return;
 
-  db.ref("mahjongResults").push({
+  const tableCost = Number(document.getElementById("tableCost").value);
+  const rate = Number(document.getElementById("rate").value);
+
+  const data = {
     title: title,
     date: new Date().toISOString(),
+    tableCost: tableCost,
+    rate: rate,
+    playerCount: playerCount,
+    useUma: useUma,
+    uma: uma,
     players: lastResult
-  });
+  };
 
-  alert("保存した！");
+  db.ref("mahjongResults").push(data)
+    .then(() => alert("保存成功！"))
+    .catch(() => alert("保存失敗"));
 }
+
+function loadHistory() {
+  const historyList = document.getElementById("history");
+  if (!historyList) return;
+  historyList.innerHTML = "";
+
+  db.ref("mahjongResults").once("value", (snapshot) => {
+    const data = snapshot.val();
+    if (!data) return;
+
+    Object.values(data).reverse().forEach((item) => {
+      const li = document.createElement("li");
+
+      // ✅ タイトル部分
+      const header = document.createElement("div");
+      header.className = "history-header";
+      header.textContent = `${item.title}（${new Date(item.date).toLocaleDateString()}）`;
+
+
+      // ✅ 詳細部分
+      const detail = document.createElement("div");
+      detail.className = "history-detail";
+
+      let html = `
+        卓代: ${item.tableCost}円 /
+        ${item.playerCount === 4 ? "四麻" : "三麻"} /
+        レート: ${item.rate}円<br>
+      `;
+
+      if (item.useUma) {
+        html += `ウマ: ${item.uma.join(", ")}<br>`;
+      } else {
+        html += "ウマ: 無<br>";
+      }
+
+      html += "<br>";
+
+      item.players.forEach(p => {
+        html += `
+          ${p.name}
+          (${p.score >= 0 ? "+" : ""}${p.score})
+          ▶ ${p.rank}位
+          : ${p.payment}円<br>
+        `;
+      });
+
+      detail.innerHTML = html;
+
+      // ✅ 最初は閉じる
+      detail.style.display = "none";
+
+      // ✅ クリックで開閉
+      header.onclick = () => {
+        detail.style.display =
+          detail.style.display === "none" ? "block" : "none";
+      };
+
+      li.appendChild(header);
+      li.appendChild(detail);
+      historyList.appendChild(li);
+    });
+  });
+}
+
+
+function goHome() {
+  location.href = "index.html";
+}
+
 
 window.saveResult = saveResult;
