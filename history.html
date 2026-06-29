@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>戦績履歴</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>戦績履歴</h1>
+
+    <ul id="history"></ul>
+
+    <button onclick="goHome()">タイトルへ戻る</button>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+  <script src="main.js"></script>
+
+  <script>
+    function goBack() {
+      location.href = "index.html";
+    }
+
+    loadHistory(); // ← ここ重要
+  </script>
+
+</body>
+</html>
