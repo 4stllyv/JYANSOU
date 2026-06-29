@@ -1,40 +1,55 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  background: linear-gradient(#0f3d2e, #09251c);
   margin: 0;
+  color: white;
 }
 
+/* コンテナ */
 .container {
-  padding: 15px;
+  padding: 14px;
+  max-width: 500px;
+  margin: auto;
 }
 
+/* タイトル */
 h1 {
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0 18px;
+  color: #f5f5f5;
 }
 
-/* 入力エリア */
-.section {
-  margin-bottom: 15px;
+/* カード */
+.section, .player {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  backdrop-filter: blur(5px);
 }
 
+/* ラベル */
+label {
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* 入力欄 */
 input {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
   font-size: 16px;
-  margin-top: 5px;
   box-sizing: border-box;
 }
 
-/* プレイヤー */
-.player {
-  background: white;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
-
-/* ボタンエリア */
+/* プレイヤー入力 */
 .score-row {
   display: flex;
   gap: 8px;
@@ -43,57 +58,105 @@ input {
 
 /* ＋−ボタン */
 .sign-btn {
-  flex: 0 0 50px;
-  font-size: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
-  background: #ddd;
+  font-size: 20px;
+  background: #333;
+  color: white;
 }
 
-/* 点数入力 */
-.score-input {
-  flex: 1;
-  font-size: 18px;
+/* プラス状態 */
+.sign-btn.plus-active {
+  background: #2ecc71;
+}
+
+/* マイナス状態 */
+.sign-btn.minus-active {
+  background: #e74c3c;
 }
 
 /* 計算ボタン */
-button.calc {
+.calc {
   width: 100%;
-  padding: 15px;
-  font-size: 18px;
-  background: #0078d7;
-  color: white;
+  padding: 14px;
+  font-size: 17px;
+  border-radius: 12px;
   border: none;
-  border-radius: 10px;
+  background: linear-gradient(90deg, #ffd700, #f39c12);
+  color: black;
+  font-weight: bold;
   margin-top: 10px;
 }
 
 /* 結果 */
 li {
-  font-size: 18px;
-  padding: 8px 0;
-}
-
-/* ✅ ウマチェックボックス拡大 */
-input[type="checkbox"] {
-  transform: scale(1.8);
-  margin-right: 10px;
-}
-
-.uma-toggle {
-  background: white;
+  background: rgba(255,255,255,0.1);
   border-radius: 10px;
-  padding: 12px;
-  justify-content: space-between;
-  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 8px;
 }
 
+/* 勝ち */
+.win {
+  color: #2ecc71;
+}
 
-/* タップしやすくする */
-label {
+/* 負け */
+.lose {
+  color: #e74c3c;
+}
+
+/* 1位 */
+.first {
+  color: gold;
+  font-weight: bold;
+}
+
+/* ✅ ウマトグル（スイッチ化） */
+.uma-toggle {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  padding: 10px 0;
+}
+
+/* iPhone風スイッチ */
+.switch {
+  position: relative;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  background: #ccc;
+  border-radius: 30px;
+  width: 100%;
+  height: 100%;
+  transition: 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  background: white;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  top: 3px;
+  left: 4px;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background: #2ecc71;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
 }
