@@ -1,35 +1,8 @@
 const playersDiv = document.getElementById("players");
 
-// 符号
-const signs = [1, 1, 1, 1];
-
 // ✅ ウマ設定
 let uma = [20000, 10000, -10000, -20000]; // 点数ベース
 let useUma = true;
-
-// UI生成
-for (let i = 0; i < 4; i++) {
-  const div = document.createElement("div");
-  div.className = "player";
-
-  div.innerHTML = `
-    <input type="text" placeholder="名前" id="name${i}">
-    
-    <div class="score-row">
-      <button class="sign-btn" id="plus${i}" onclick="setSign(${i}, 1)">＋</button>
-      <button class="sign-btn" id="minus${i}" onclick="setSign(${i}, -1)">−</button>
-      <input 
-        class="score-input" 
-        type="number" 
-        inputmode="numeric"
-        placeholder="点 (例:50000)" 
-        id="score${i}">
-    </div>
-  `;
-
-  playersDiv.appendChild(div);
-  setSign(i, 1);
-}
 
 // ＋−ボタン
 function setSign(index, value) {
@@ -61,7 +34,7 @@ function calculate() {
 
   let players = [];
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < playerCount; i++) {
     const name =
       document.getElementById(`name${i}`).value || `プレイヤー${i + 1}`;
 
@@ -96,7 +69,7 @@ function calculate() {
     p.rank = i + 1;
   });
 
-  const base = tableCost / 4;
+  const base = tableCost / playerCount;
   let totalPayment = 0;
 
   players.forEach((p) => {
@@ -129,7 +102,9 @@ function calculate() {
       <span class="${className}">
         ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
       </span>
-      ▶ ${rank}位 : ${payment} 円
+      ▶ ${rank}位
+      ${useUma ? `（ウマ ${uma[rank - 1] > 0 ? "+" : ""}${uma[rank - 1]}）` : ""}
+      : ${payment} 円
     `;
 
     resultList.appendChild(li);
@@ -139,3 +114,53 @@ function calculate() {
   document.getElementById("total").textContent =
     `合計：${totalPayment} 円`;
 }
+
+let playerCount = 4;
+const signs = [];
+
+function createPlayers() {
+  const playersDiv = document.getElementById("players");
+  playersDiv.innerHTML = "";
+
+  signs.length = 0;
+
+  for (let i = 0; i < playerCount; i++) {
+    signs.push(1);
+
+    const div = document.createElement("div");
+    div.className = "player";
+
+    div.innerHTML = `
+      <input type="text" placeholder="名前" id="name${i}">
+      
+      <div class="score-row">
+        <button class="sign-btn" id="plus${i}" onclick="setSign(${i}, 1)">＋</button>
+        <button class="sign-btn" id="minus${i}" onclick="setSign(${i}, -1)">−</button>
+        <input type="number" placeholder="点" id="score${i}">
+      </div>
+    `;
+
+    playersDiv.appendChild(div);
+
+    setSign(i, 1);
+  }
+}
+
+function setMode(n) {
+  playerCount = n;
+
+  document.getElementById("btn4").classList.remove("active");
+  document.getElementById("btn3").classList.remove("active");
+
+  document.getElementById(n === 4 ? "btn4" : "btn3").classList.add("active");
+
+  if (playerCount === 3) {
+    uma = [20000, 0, -20000];
+  } else {
+    uma = [20000, 10000, -10000, -20000];
+  }
+
+  createPlayers();
+}
+
+setMode(4);
