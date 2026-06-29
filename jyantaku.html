@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>麻雀 卓代計算</title>
+  <link rel="stylesheet" href="jyantaku.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>麻雀 卓代計算</h1>
+
+    <div class="section">
+      <label>卓代（合計）</label>
+      <input type="number" id="tableCost" placeholder="例：4000">
+    </div>
+
+    <div class="section">
+      <label>レート（1000点あたり円）</label>
+      <input type="number" id="rate" value="50">
+    </div>
+
+    <div id="players"></div>
+
+    <button class="calc" onclick="calculate()">計算する</button>
+
+    <h2>結果</h2>
+    <ul id="results"></ul>
+
+    <p id="total"></p>
+  </div>
+
+  <script src="jyantaku.js"></script>
+</body>
+</html>
