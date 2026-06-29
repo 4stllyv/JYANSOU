@@ -219,6 +219,7 @@ setMode(4);
 toggleUma();
 
 function saveResult() {
+  console.log("lastResult:", lastResult);
   if (!lastResult) {
     alert("先に計算して！");
     return;
@@ -235,3 +236,5 @@ function saveResult() {
 
   alert("保存した！");
 }
+
+window.saveResult = saveResult;
