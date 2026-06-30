@@ -439,3 +439,50 @@ font-size: 14px;
   background: rgba(255,255,255,0.3);
 }
 
+.result-actions-row {
+  max-width: 500px;
+  width: 90%;
+  margin: 30px auto 60px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 戻る（小さく） */
+.back-btn-small {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: none;
+
+  background: rgba(255,255,255,0.2);
+  color: white;
+  cursor: pointer;
+
+  flex: 0 0 auto; /* 固定サイズ */
+}
+
+/* 保存（でかく目立たせる） */
+.save-btn {
+  flex: 1; /* ←ここ重要（横に伸びる） */
+
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: none;
+
+  background: linear-gradient(90deg, #ffcc00, #ff8800);
+  color: black;
+  cursor: pointer;
+}
+
+/* ホバー */
+.save-btn:hover {
+  opacity: 0.9;
+}
+
+.back-btn-small:hover {
+  background: rgba(255,255,255,0.3);
+}
+
