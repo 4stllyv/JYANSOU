@@ -280,3 +280,162 @@ font-size: 14px;
   margin-bottom: 10px;
   font-size: 13px;
 }
+
+/* 全体中央寄せ */
+.top-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* タイトル */
+.title {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+/* サブ */
+.subtitle {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 40px;
+}
+
+/* ボタンエリア */
+.menu {
+  width: 80%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* メインボタン */
+.main-btn {
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #ffcc00, #ff8800);
+  color: black;
+  cursor: pointer;
+}
+
+/* サブボタン */
+.sub-btn {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: white;
+  color: black;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+/* ホバー */
+.main-btn:hover {
+  opacity: 0.9;
+}
+
+.sub-btn:hover {
+  opacity: 1;
+}
+
+/* ヘッダー */
+.header {
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;   /* ←中央寄せ */
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 0;
+}
+
+/* 戻るボタン */
+.back-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* タイトル */
+.header h1 {
+  font-size: 18px;
+}
+
+/* 履歴全体 */
+#history {
+  max-width: 500px;
+  width: 90%;
+  margin: 20px auto;   /* ←中央寄せ */
+  padding: 0;
+}
+
+.history-header {
+  background: rgba(255,255,255,0.15);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ✅ スクロール有効 */
+.history-page {
+  overflow-y: auto;
+}
+
+/* ボタンエリア */
+.result-actions {
+  max-width: 500px;
+  width: 90%;
+  margin: 30px auto 60px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 保存（メイン） */
+.save-btn {
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: none;
+
+  background: linear-gradient(90deg, #ffcc00, #ff8800);
+  color: black;
+  cursor: pointer;
+}
+
+/* 戻る（サブ） */
+.back-btn-small {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: none;
+
+  background: rgba(255,255,255,0.2);
+  color: white;
+  cursor: pointer;
+}
+
+/* ホバー */
+.save-btn:hover {
+  opacity: 0.9;
+}
+
+.back-btn-small:hover {
+  background: rgba(255,255,255,0.3);
+}
+
