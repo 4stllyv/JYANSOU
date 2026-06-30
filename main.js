@@ -252,6 +252,9 @@ function loadHistory() {
     const data = snapshot.val();
     if (!data) return;
 
+    const stats = calcStats(data);
+    showStats(stats);
+
     Object.values(data).reverse().forEach((item) => {
       const li = document.createElement("li");
 
@@ -304,6 +307,122 @@ function loadHistory() {
       historyList.appendChild(li);
     });
   });
+}
+
+function calcStats(data) {
+  const stats = {};
+
+  Object.values(data).forEach(game => {
+    game.players.forEach(p => {
+      if (!stats[p.name]) {
+        stats[p.name] = {
+          games: 0,
+          wins: 0,
+          totalRank: 0
+        };
+      }
+
+      stats[p.name].games++;
+      stats[p.name].totalRank += p.rank;
+
+      if (p.rank === 1) {
+        stats[p.name].wins++;
+      }
+    });
+  });
+
+  return stats;
+}
+
+function showStats(stats) {
+  const container = document.getElementById("stats");
+  if (!container) return;
+
+  container.innerHTML = "<h2>成績</h2>";
+
+  Object.entries(stats).forEach(([name, s]) => {
+    const winRate = Math.round((s.wins / s.games) * 100);
+    const avgRank = (s.totalRank / s.games).toFixed(2);
+
+    const div = document.createElement("div");
+
+    div.innerHTML = `
+      <strong>${name}</strong><br>
+      勝率: ${winRate}% (${s.wins}/${s.games})<br>
+      平均順位: ${avgRank}
+      <hr>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+function loadStats() {
+  const container = document.getElementById("stats");
+  if (!container) return;
+
+  container.innerHTML = "読み込み中...";
+
+  db.ref("mahjongResults").once("value", (snapshot) => {
+    const data = snapshot.val();
+    if (!data) {
+      container.innerHTML = "データなし";
+      return;
+    }
+
+    const stats = {};
+
+    Object.values(data).forEach(game => {
+      game.players.forEach(p => {
+        const name = p.name.trim();
+
+        if (!stats[name]) {
+          stats[name] = {
+            games: 0,
+            wins: 0,
+            totalRank: 0,
+            money: 0
+          };
+        }
+
+        stats[name].games++;
+        stats[name].totalRank += p.rank;
+        stats[name].money += p.payment;
+
+        if (p.rank === 1) stats[name].wins++;
+      });
+    });
+
+    // ✅ 勝率順に並べる
+    const sorted = Object.entries(stats).sort((a, b) => {
+      const rateA = a[1].wins / a[1].games;
+      const rateB = b[1].wins / b[1].games;
+      return rateB - rateA;
+    });
+
+    container.innerHTML = "<h2>ランキング</h2>";
+
+    sorted.forEach(([name, s]) => {
+      const winRate = Math.round((s.wins / s.games) * 100);
+      const avgRank = (s.totalRank / s.games).toFixed(2);
+
+      const div = document.createElement("div");
+      div.className = "stat-card";
+
+      div.innerHTML = `
+        <strong>${name}</strong><br>
+        勝率: ${winRate}%（${s.wins}/${s.games}）<br>
+        平均順位: ${avgRank}<br>
+        支出: ${s.money}円
+      `;
+
+      container.appendChild(div);
+    });
+  });
+}
+
+function goStats() {
+  location.href = "stats.html";
 }
 
 
