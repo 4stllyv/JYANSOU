@@ -395,6 +395,11 @@ font-size: 14px;
   overflow-y: auto;
 }
 
+/* ✅ スクロール有効 */
+.stats-page {
+  overflow-y: auto;
+}
+
 /* ボタンエリア */
 .result-actions {
   max-width: 500px;
