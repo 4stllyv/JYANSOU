@@ -68,10 +68,17 @@ function calculate() {
       return;
     }
 
-    const inputScore = Number(scoreInput);
-    const score = inputScore * signs[i];
+    const point = Number(scoreInput);
 
-    players.push({ name, score, index: i });
+    // 持ち点 → ±点数へ変換
+    const score = point - 25000;
+
+    players.push({
+      name,
+      point,
+      score,
+      index: i
+    });
   }
 
   // ✅ 合計チェック
@@ -144,7 +151,7 @@ function calculate() {
 
   li.innerHTML = `
     <span class="${className}">
-      ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
+      ${p.name}（${p.point}点）
     </span>
     ▶ ${rank}位
     : ${payment} 円
@@ -378,18 +385,42 @@ function loadStats() {
 
         if (!stats[name]) {
           stats[name] = {
-            games: 0,
-            wins: 0,
-            totalRank: 0,
-            money: 0
-          };
+          games: 0,
+          wins: 0,
+          top2: 0,
+          totalRank: 0,
+          money: 0,
+          rank1: 0,
+          rank2: 0,
+          rank3: 0,
+          rank4: 0
+        };
         }
 
         stats[name].games++;
         stats[name].totalRank += p.rank;
-        stats[name].money += p.payment;
+        stats[name].money -= p.payment;
 
-        if (p.rank === 1) stats[name].wins++;
+        if (p.rank === 1) {
+          stats[name].wins++;
+          stats[name].rank1++;
+        }
+
+        if (p.rank === 2) {
+          stats[name].rank2++;
+        }
+
+        if (p.rank === 3) {
+          stats[name].rank3++;
+        }
+
+        if (p.rank === 4) {
+          stats[name].rank4++;
+        }
+
+        if (p.rank <= 2) {
+          stats[name].top2++;
+        }
       });
     });
 
@@ -409,12 +440,22 @@ function loadStats() {
       const div = document.createElement("div");
       div.className = "stat-card";
 
-      div.innerHTML = `
-        <strong>${name}</strong><br>
-        勝率: ${winRate}%（${s.wins}/${s.games}）<br>
-        平均順位: ${avgRank}<br>
-        支出: ${s.money}円
-      `;
+      const top2Rate =
+      Math.round((s.top2 / s.games) * 100);
+
+    div.innerHTML = `
+      <strong>${name}</strong><br>
+
+      勝率: ${winRate}%<br>
+      連対率: ${top2Rate}%<br>
+      平均順位: ${avgRank}<br>
+      収支: ${s.money >= 0 ? "+" : ""}${s.money}円<br><br>
+
+      1位 ${s.rank1}回<br>
+      2位 ${s.rank2}回<br>
+      3位 ${s.rank3}回<br>
+      4位 ${s.rank4}回
+    `;
 
       container.appendChild(div);
     });
