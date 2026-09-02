@@ -70,12 +70,11 @@ function calculate() {
 
     const point = Number(scoreInput);
 
-    // 持ち点 → ±点数へ変換
-    const score = point - 25000;
+    const inputScore = Number(scoreInput);
+    const score = inputScore * signs[i];
 
     players.push({
       name,
-      point,
       score,
       index: i
     });
@@ -151,14 +150,18 @@ function calculate() {
 
   li.innerHTML = `
     <span class="${className}">
-      ${p.name}（${p.point}点）
+      ${p.name}（${p.score > 0 ? "+" : ""}${p.score}）
     </span>
     ▶ ${rank}位
     : ${payment} 円
   `;
 
   resultList.appendChild(li);
+totalPayment += payment;
 });
+
+document.getElementById("total").textContent =
+  `合計：${totalPayment} 円`;
 }
 
 let playerCount = 4;
@@ -228,8 +231,13 @@ function saveResult() {
     return;
   }
 
-  const title = prompt("戦績タイトル入力");
-  if (!title) return;
+  const title =
+  document.getElementById("resultTitle").value.trim();
+
+  if (!title) {
+    alert("戦績タイトルを入力して");
+    return;
+  }
 
   const tableCost = Number(document.getElementById("tableCost").value);
   const rate = Number(document.getElementById("rate").value);
